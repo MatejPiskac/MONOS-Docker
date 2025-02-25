@@ -212,6 +212,7 @@ if (isset($_GET['login'])) {
 
 } elseif (isset($_GET['user'])) {
     $userId = $_GET['user'];
+    $_SESSION["error"] = "";
 
     if ($userId || !empty($userId)) {
         $input_name = ["username"];
@@ -289,6 +290,8 @@ if (isset($_GET['login'])) {
 
             if ($updateStatus === false) {
                 $_SESSION["error"] = "Couldn't update username!";
+            } else {
+                $_SESSION["error"] = "";
             }
             
             if (isset($_GET['self-update'])) {
@@ -339,11 +342,21 @@ if (isset($_GET['login'])) {
                 $_SESSION["password_confirm"] = "";
                 $hash = pass_hash($_POST["password"]);
 
-                $insert = "INSERT INTO users (username, hash) VALUES ('{$_POST['username']}', '{$hash}')";
-                $insertStatus = $conn->query($insert);
+                $check = "SELECT * FROM users WHERE username='{$_POST['username']}'";
+                $check = $conn->query($check);
+                $check = $check->fetch_all(MYSQLI_ASSOC);
 
-                if ($insertStatus === false) {
-                    $_SESSION["error"] = "Couldn't create user!";
+                if (empty($check)) {
+                    $insert = "INSERT INTO users (username, hash) VALUES ('{$_POST['username']}', '{$hash}')";
+                    $insertStatus = $conn->query($insert);
+                    
+                    if ($insertStatus === false) {
+                        $_SESSION["error"] = "Couldn't create user!";
+                    } else {
+                        $_SESSION["error"] = "";
+                    }
+                } else {
+                    $_SESSION["error"] = "User with this name already exists!";
                 }
 
             } else {
@@ -352,12 +365,13 @@ if (isset($_GET['login'])) {
         } else {
             $_SESSION["error"] = "Enter username and password!";
         }
-
-        if (isset($_GET['self-update'])) {
-            header("location: ../account/?edit={$userId}");
+        
+        if ($_SESSION["error"] === "") {
+            header("location: ../admin");
         } else {
-            header("location: ../admin/?user={$userId}");
+            header("location: ../admin/adduser/");
         }
+        
     }
 
 } elseif (isset($_GET["profile"])) {
