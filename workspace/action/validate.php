@@ -218,7 +218,7 @@ if (isset($_GET['login'])) {
         $input_passwords = ["password", "password_confirm"];
         $input = array_merge($input_name, $input_passwords);
 
-        
+
         if (isset($_GET["self-update"])) {
             if (count(validate($input_passwords, true)) == 0) {
                 if (count(validate(["old_password"], true)) == 0) {
@@ -266,7 +266,7 @@ if (isset($_GET['login'])) {
                 $_SESSION["password_confirm"] = "";
                 $hash = pass_hash($_POST["password"]);
 
-                $update = "UPDATE users SET username='{$_SESSION['username']}' hash='{$hash}' WHERE id={$userId} AND not username = 'admin'";
+                $update = "UPDATE users SET username='{$_POST['username']}' hash='{$hash}' WHERE id={$userId} AND not username = 'admin'";
                 $updateStatus = $conn->query($update);
 
                 if ($updateStatus === false) {
