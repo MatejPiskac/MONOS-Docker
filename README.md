@@ -30,7 +30,7 @@ docker build -t <image-name> .
 ### Run the docker
 Find docker name:
 ```sh
-docker ps
+docker images
 ```
 Run the docker
 ```sh
