@@ -212,7 +212,6 @@ if (isset($_GET['login'])) {
 
 } elseif (isset($_GET['user'])) {
     $userId = $_GET['user'];
-    $_SESSION["error"] = "";
 
     if ($userId || !empty($userId)) {
         $input_name = ["username"];
