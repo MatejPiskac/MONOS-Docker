@@ -266,7 +266,7 @@ if (isset($_GET['login'])) {
                 $_SESSION["password_confirm"] = "";
                 $hash = pass_hash($_POST["password"]);
 
-                $update = "UPDATE users SET username='{$_POST['username']}' hash='{$hash}' WHERE id={$userId} AND not username = 'admin'";
+                $update = "UPDATE users SET username='{$_POST['username']}', hash='{$hash}' WHERE id={$userId} AND not username = 'admin'";
                 $updateStatus = $conn->query($update);
 
                 if ($updateStatus === false) {
