@@ -81,7 +81,7 @@
                     $username = $user["username"];
 
                     echo "
-                        <a href='../?user={$_GET['user']}'>{$username}</a>
+                        <a href='?user={$_GET['user']}'>{$username}</a>
                     ";
                 }
             ?>
