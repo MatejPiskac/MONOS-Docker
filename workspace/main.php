@@ -217,7 +217,7 @@ function account($userId, $username) {
             <div class=\"account-wrap\">
                 <img src=\"../icons/user.png\" alt=\"profile picture\">
                 <div class=\"account-info\">
-                    <div class=\"username\"><a class=\"edit-account\" href=\"?edit=$userId\"</a></div>
+                    <div class=\"username\">$username<a class=\"edit-account\" href=\"?edit=$userId\"></a></div>
                     <div class=\"password\">********<a class=\"edit-account\" href=\"?edit=$userId\"></a></div>
                 </div>
             </div>
@@ -227,7 +227,7 @@ function account($userId, $username) {
             <div class=\"account-wrap\">
                 <img src=\"../icons/user.png\" alt=\"profile picture\">
                 <div class=\"account-info\">
-                    <div class=\"username\">".$username."</div>
+                    <div class=\"username\">$username</div>
                     <div class=\"password\">********<a class=\"edit-account\" href=\"?edit=$userId\"></a></div>
                 </div>
             </div>";
