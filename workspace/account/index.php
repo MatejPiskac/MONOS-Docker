@@ -8,18 +8,16 @@
     //include "snmp.php";
     include "../main.php";
 
-    var_dump($_SESSION["userId"], $_SESSION["user"]);
-
     if (isset($_SESSION["userId"]) && isset($_SESSION["user"])) {
         $userId = $_SESSION["userId"];
         $username = $_SESSION["user"];
         if (isset($_GET['edit'])) {
             $content = editAccount($username, $userId);
         } else {
-            $content = account();
+            $content = account($userId, $username);
         }
     } else {
-        $content = account();
+        header();
     }
     
 

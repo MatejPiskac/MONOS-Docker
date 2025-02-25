@@ -2,6 +2,12 @@
 session_start();
 include "real-time-snmp.php";
 
+if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+    $USER = $_SESSION['user'];
+} else {
+    header("location: /MONOS/workspace/login/login.php");
+}
+
 header('Content-Type: application/json');
 
 # -- Functions ----

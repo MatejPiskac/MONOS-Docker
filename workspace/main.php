@@ -207,17 +207,10 @@ function manageUsers($userId = null) {
     return $content;
 }
 
-function account() {
+function account($userId, $username) {
     global $conn;
     
     if (isset($_SESSION['userId'])) {
-        $userId = $_SESSION['userId'];
-
-        $user = "SELECT * FROM users WHERE id = $userId";
-        $user = $conn->query($user);
-        $user = $user->fetch_all(MYSQLI_ASSOC)[0];
-
-        $username = $user['username'];
 
         if ($username !== "admin") {
             $content = "
@@ -269,7 +262,7 @@ function editAccount($username, $userId) {
         $deleteButton = "
         <form method=POST action=\"../action/validate.php?user=$userId&delete=true\">
             <div class=\"delete-wrap\">
-                <button type=\"submit\" onclick=\"return confirm(\'Are you sure you want to delete this user?\')\">Delete user</button>
+                <button type=\"submit\" onclick=\"return confirm(\'Are you sure you want to delete your account?\')\">Delete user</button>
             </div>
         </form>
         ";

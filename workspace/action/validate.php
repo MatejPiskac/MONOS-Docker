@@ -218,7 +218,34 @@ if (isset($_GET['login'])) {
         $input_passwords = ["password", "password_confirm"];
         $input = array_merge($input_name, $input_passwords);
 
-        if ($_GET['delete']) {
+        
+        if (isset($_GET["self-update"])) {
+            if (count(validate($input_passwords, true)) == 0) {
+                if (count(validate(["old_password"], true)) == 0) {
+                    $entered_hash = pass_hash($_POST["old_password"]);
+                    
+                    $check = "SELECT * FROM users WHERE hash = '{$entered_hash}' AND id = $userId";
+                    $check = $conn->query($check);
+                    $check = $check->fetch_all(MYSQLI_ASSOC)[0];
+
+                    if (!empty($check)) {
+                        updatePass($_POST['password'], $_POST['password_confirm'], $userId);
+                        header("location: ../account?user={$userId}");
+                    } else {
+                        $_SESSION["error"] = "Wrong password.";
+                    }
+                } else {
+                    $_SESSION["error"] = "You have to enter your current password!";
+                    header("location: ../account?user={$userId}");
+                }
+            
+            } elseif (!isset($_POST["old_password"])) {
+                updatePass($_POST['password'], $_POST['password_confirm'], $userId);
+            }
+
+            header("location: ../account?user={$userId}");
+
+        } elseif (isset($_GET['delete'])) {
             $query = "DELETE FROM users WHERE id = $userId AND not username = 'admin'";
             $deleteStatus = $conn->query($query);
 

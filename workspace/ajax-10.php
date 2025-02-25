@@ -4,6 +4,12 @@ include "real-time-snmp.php";
 
 header('Content-Type: application/json');
 
+if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+    $USER = $_SESSION['user'];
+} else {
+    header("location: /MONOS/workspace/login/login.php");
+}
+
 # -- Functions ----
 
 function device() {
