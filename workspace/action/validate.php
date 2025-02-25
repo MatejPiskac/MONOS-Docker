@@ -280,7 +280,7 @@ if (isset($_GET['login'])) {
             if (isset($_GET['self-update'])) {
                 header("location: ../account/?edit={$userId}");
             } else {
-                header("location: ../admin/?user={$userId}");
+                header("location: ../admin");
             }
 
         } elseif (count(validate($input_name, true)) == 0) {
