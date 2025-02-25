@@ -7,6 +7,7 @@ function getSNMPData($hostIp, $deviceType, $community) {
     $deviceTypeArray = [
         1 => 'router',
         3 => 'workstation',
+        4 => 'workstation',
     ];
 
     foreach ($deviceTypeArray as $key => $value) {
@@ -14,7 +15,7 @@ function getSNMPData($hostIp, $deviceType, $community) {
             $return = $value($hostIp, $community);
             break;
         } else {
-            $return = "NO SUCH DEVICE TYPE!!";
+            $return = "<p class='report-text'>There aren't any details for this device type!</p>";
         }
     }
 
@@ -35,13 +36,6 @@ function snmpFormat($snmp_arr, $separator) {
 
     return $snmp_formatted_arr;
 }
-
-
-function SNMPDataRecord() {
-    # SNMP Continous Recording -- returns the data overtime and writes it to database
-}
-
-# Device OID Functions
 
 function router($hostIp, $community) {
     $oid_list = [
@@ -639,17 +633,6 @@ function workstation($hostIp, $community) {
                                     <div>Used Space</div>
                                     <div>{$disk_used} GB</div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class='title'>
-                            USERS
-                        </div>
-                        <div class='roll'>
-                            <div>
-                                <div>user</div>
-                                <div>root</div>
                             </div>
                         </div>
                     </div>

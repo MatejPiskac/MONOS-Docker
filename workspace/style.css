@@ -55,6 +55,12 @@ h3.ip {
     text-align: center;
 }
 
+.report-text {
+    text-align: center;
+    margin: auto;
+    padding: 0 10vw;
+}
+
 body {
     margin: 0;
     overflow-x: hidden;

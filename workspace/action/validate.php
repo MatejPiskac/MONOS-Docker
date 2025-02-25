@@ -455,8 +455,6 @@ if (isset($_GET['login'])) {
 
             if ($insertStatus === false) {
                 $_SESSION['error'] = $insertStatus;
-
-                header("location: ../edit/device/");
             } else {
                 $deviceID = $conn->insert_id;
                 $profileIds = $_POST["profiles"];
@@ -465,12 +463,12 @@ if (isset($_GET['login'])) {
                     $id = (int)$id;
                     $insert = "INSERT INTO profileReleations (profileId, deviceId) VALUES ('{$id}', '{$deviceID}')";
                     $insertStatus = $conn->query($insert);
-                }
 
-                header("location: ../");
+                    header("location: ../edit/device/");
+                }
             }
 
-            
+            header("location: ../");
         }
         
             
