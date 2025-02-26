@@ -397,12 +397,12 @@ if (isset($_GET['login'])) {
     $input = ["name"];
 
     if (count(validate(["delete_id"], true)) == 0) {
-        $query = "SELECT device_id FROM profileReleations WHERE profile_id = $profileId";
+        $query = "SELECT deviceId FROM profileReleations WHERE profile_id = $profileId";
         $selectStatus = $conn->query($query);
 
         $deviceIds = [];
         while ($row = $selectStatus->fetch_assoc()) {
-            $deviceIds[] = $row['device_id'];
+            $deviceIds[] = $row['deviceId'];
         }
 
         // Convert IDs array to string
@@ -542,6 +542,8 @@ if (isset($_GET['login'])) {
 
             if ($insertStatus === false) {
                 $_SESSION['error'] = $insertStatus;
+                header("location: ../edit/device/");
+                exit();
             } else {
                 $deviceID = $conn->insert_id;
                 $profileIds = $_POST["profiles"];
@@ -551,8 +553,14 @@ if (isset($_GET['login'])) {
                     $insert = "INSERT INTO profileReleations (profileId, deviceId) VALUES ('{$id}', '{$deviceID}')";
                     $insertStatus = $conn->query($insert);
 
-                    header("location: ../edit/device/");
-                    exit();
+                    if ($insertStatus === false) {
+                        $_SESSION['error'] = $insertStatus;
+                        header("location: ../edit/device/");
+                        exit();
+                    } else {
+                        header("location: ../");
+                        exit();
+                    }
                 }
             }
 
