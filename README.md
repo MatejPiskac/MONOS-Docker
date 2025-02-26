@@ -15,7 +15,18 @@
   <a href="#station">Workstation/Server</a>  |  <a href="#router">Router</a>
 </details>
 
-## <a name="install">Install Monos on your server</a>
+## <a name="install">Installation with docker container</a>
+
+### Install neccessary dependencies
+Download `docker.io`
+```sh
+sudo apt update && apt install -y docker.io
+```
+If you don't have _wget_ or _curl_ download it using this command
+```sh
+sudo apt install -y wget
+sudo apt install -y curl
+```
 
 ### Install dockerfile
 With `wget`
