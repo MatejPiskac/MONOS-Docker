@@ -377,8 +377,8 @@ if (isset($_GET['login'])) {
     $profileId = $_GET["profile"];
     $input = ["name"];
 
-    if (count(validate(["delete_id"], true)) == 0) {
-        $query = "DELETE FROM profiles WHERE id = '$profile_id'";
+    if (isset($_POST["delete-id"])) {
+        $query = "DELETE FROM profiles WHERE id = $profile_id";
         $deleteStatus = $conn->query($query);
 
         if ($deleteStatus === false) {
