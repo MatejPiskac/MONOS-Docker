@@ -397,7 +397,7 @@ if (isset($_GET['login'])) {
     $input = ["name"];
 
     if (count(validate(["delete_id"], true)) == 0) {
-        $query = "SELECT deviceId FROM profileReleations WHERE profile_id = $profileId";
+        $query = "SELECT deviceId FROM profileReleations WHERE profileId = $profileId";
         $selectStatus = $conn->query($query);
 
         $deviceIds = [];
