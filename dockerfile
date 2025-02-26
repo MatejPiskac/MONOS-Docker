@@ -15,14 +15,29 @@ RUN apt update && apt install -y \
 RUN download-mibs
 
 # Copy SNMP configuration
-COPY snmpd.conf /etc/snmp/snmpd.conf
+RUN cat <<EOF > /etc/snmp/snmpd.conf
+rocommunity public localhost
+
+# Disk monitoring
+disk  / 100
+
+# Agent user
+agentuser  user
+
+# Agent address
+agentAddress udp:161
+
+# System location and contact
+syslocation Unknown
+
+EOF
 
 # Enable mysqli extension in PHP
 RUN sed -i 's/;extension=mysqli/extension=mysqli/' /etc/php/*/apache2/php.ini
 
 # Clone MONOS repository
 WORKDIR /var/www/html/
-RUN git clone https://github.com/DebStream-Solutions/MONOS.git MONOS
+RUN git clone https://github.com/MatejPiskac/MONOS-Docker.git MONOS
 
 # Ensure the script is executable
 RUN chmod +x /var/www/html/MONOS/db-setup.sh
