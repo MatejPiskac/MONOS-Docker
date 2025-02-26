@@ -28,6 +28,7 @@ curl https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/d
 ```
 
 ### Build the docker container
+Navigate to directory with _dockerfile_ inside and run:
 ```sh
 docker build -t <image-name> .
 ```
@@ -41,6 +42,7 @@ Run the docker
 ```sh
 docker run -it -p 80:80 <container-id>
 ```
+> After the docker finishes starting process it outputs **admin password** for first login to Monos
 
 
 ### To run commands in container
