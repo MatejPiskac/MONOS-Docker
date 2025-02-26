@@ -9,7 +9,7 @@
 # MANUAL FOR SNMP MONITORING
 
 
-<a href="#install">Install Monos</a>  |  <a href="#monos-srv">Monos Server Setup</a>  |  <a href="#db">Install DB</a>
+<a href="#install">Installation with container</a>  |  <a href="#monos-srv">Manual Monos Server setup</a>  |  <a href="#db">Manual DB setup</a>
 <details>
   <summary>Monos Client</summary>
   <a href="#station">Workstation/Server</a>  |  <a href="#router">Router</a>
@@ -22,7 +22,7 @@ Download `docker.io`
 ```sh
 sudo apt update && apt install -y docker.io
 ```
-If you don't have _wget_ or _curl_ download it using this command
+If you don't have `wget` or `curl` download it using this command
 ```sh
 sudo apt install -y wget
 sudo apt install -y curl
@@ -68,11 +68,11 @@ docker exec -it <container-id> bash
 ```
 
 
-## <a name="monos-srv">Setup Debian Server for MONOS</a>
+## <a name="monos-srv">Manual Monos Server setup</a>
 
 ### Install required dependencies
 ```sh
-sudo apt install -y snmp snmpd libsnmp-dev snmp-mibs-downloader php-snmp php php-mysqli apache2 libapache2-mod-php mariadb-server 
+sudo apt install -y snmp snmpd libsnmp-dev snmp-mibs-downloader php-snmp php php-mysqli apache2 libapache2-mod-php mariadb-server iputils-ping git
 ```
 
 ### Install MIBs for SNMP
@@ -86,26 +86,19 @@ nano /etc/snmp/snmpd.conf
 ```
 Content:
 ```sh
-rwcommunity [COMMUNITY] default
+rocommunity public localhost
 
 # Disk monitoring
 disk  / 100
 
 # Agent user
-agentuser  [USER]
+agentuser  user
 
 # Agent address
 agentAddress udp:161
 
 # System location and contact
 syslocation Unknown
-syscontact Root <root@localhost>
-
-# Access control
-access [COMMUNITY] "" any noauth exact systemview none none
-
-# Logging
-dontLogTCPWrappersConnects yes
 ```
 
 ### Enable `mysqli` extension
@@ -127,13 +120,9 @@ Navigate to `/var/www/html/` directory:
 ```sh
 cd /var/www/html/
 ```
-Download the Monos App using `wget` or `git`
+Download the Monos App using `git clone`
 ```sh
-wget https://monos.debstream.org/app/download
-```
-```sh
-git clone https://github.com/DebStream-Solutions/monos.git
-# git clone https://username:<pat>@github.com/<your account or organization>/<repo>.git
+git clone https://github.com/MatejPiskac/MONOS-Docker.git
 ```
 
 ### <a name="db">Configure Monos database</a>
@@ -141,6 +130,11 @@ git clone https://github.com/DebStream-Solutions/monos.git
 Navigate to directory MONOS
 ```sh
 cd /var/www/html/MONOS
+```
+
+Make `db-setup.sh` executable
+```sh
+sudo chmod +x db-setup.sh
 ```
 
 Run `db-setup.sh` script to configure database
