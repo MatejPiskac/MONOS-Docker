@@ -378,13 +378,13 @@ if (isset($_GET['login'])) {
     $input = ["name"];
 
     if (count(validate(["delete_id"], true)) == 0) {
-        $query = "DELETE FROM profiles WHERE id = $profile_id";
+        $query = "DELETE FROM profiles WHERE id = $profileId";
         $deleteStatus = $conn->query($query);
 
         if ($deleteStatus === false) {
             $_SESSION['error'] = $deleteStatus;
 
-            header("location: ../edit/profile/?profile=".$profile_id);
+            header("location: ../edit/profile/?profile=".$profileId);
         } else {
             header("location: ../");
         }
