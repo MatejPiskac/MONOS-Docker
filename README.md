@@ -72,7 +72,7 @@ docker exec -it <container-id> bash
 
 ### Install required dependencies
 ```sh
-sudo apt install -y snmp snmpd libsnmp-dev snmp-mibs-downloader php-snmp php php-mysqli apache2 libapache2-mod-php mariadb-server iputils-ping git
+sudo apt install -y snmp snmpd libsnmp-dev snmp-mibs-downloader php-snmp php php-mysqli apache2 libapache2-mod-php mariadb-server iputils-ping git-all
 ```
 
 ### Install MIBs for SNMP
