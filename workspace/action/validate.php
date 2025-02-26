@@ -199,15 +199,18 @@ if (isset($_GET['login'])) {
 
             $_SESSION["error"] = "";
             header("location: ../");
+            exit();
             
         } else {
             $_SESSION["error"] = "Wrong username or password";
             header("location: ../login/login.php");
+            exit();
         }
         
     } else {
         $_SESSION["error"] = "Wrong format";
         header("location: ../login/login.php");
+        exit();
     }
 
 } elseif (isset($_GET['user'])) {
@@ -231,12 +234,14 @@ if (isset($_GET['login'])) {
                     if (!empty($check)) {
                         updatePass($_POST['password'], $_POST['password_confirm'], $userId);
                         header("location: ../account?user={$userId}");
+                        exit();
                     } else {
                         $_SESSION["error"] = "Wrong password.";
                     }
                 } else {
                     $_SESSION["error"] = "You have to enter your current password!";
                     header("location: ../account?user={$userId}");
+                    exit();
                 }
             
             } elseif (!isset($_POST["old_password"])) {
@@ -244,6 +249,7 @@ if (isset($_GET['login'])) {
             }
 
             header("location: ../account?user={$userId}");
+            exit();
 
         } elseif (isset($_GET['delete'])) {
             $query = "DELETE FROM users WHERE id = $userId AND not username = 'admin'";
@@ -255,8 +261,10 @@ if (isset($_GET['login'])) {
             
             if (isset($_GET['self-update'])) {
                 header("location: ../login/login.php");
+                exit();
             } else {
                 header("location: ../admin");
+                exit();
             }
             
 
@@ -279,8 +287,10 @@ if (isset($_GET['login'])) {
 
             if (isset($_GET['self-update'])) {
                 header("location: ../account/?edit={$userId}");
+                exit();
             } else {
                 header("location: ../admin");
+                exit();
             }
 
         } elseif (count(validate($input_name, true)) == 0) {
@@ -295,8 +305,10 @@ if (isset($_GET['login'])) {
             
             if (isset($_GET['self-update'])) {
                 header("location: ../account/?edit={$userId}");
+                exit();
             } else {
                 header("location: ../admin/?user={$userId}");
+                exit();
             }
 
         } elseif (count(validate($input_passwords, true)) == 0) {
@@ -311,12 +323,14 @@ if (isset($_GET['login'])) {
                     if (!empty($check)) {
                         updatePass($_POST['password'], $_POST['password_confirm'], $userId);
                         header("location: ../account?user={$userId}");
+                        exit();
                     } else {
                         $_SESSION["error"] = "Wrong password.";
                     }
                 } else {
                     $_SESSION["error"] = "You have to enter your current password!";
                     header("location: ../account?user={$userId}");
+                    exit();
                 }
             
             } elseif (!isset($_POST["old_password"])) {
@@ -324,12 +338,15 @@ if (isset($_GET['login'])) {
             }
 
             header("location: ../account?user={$userId}");
+            exit();
         } else {
             $_SESSION["error"] = "Nothing to edit or delete!";
             if (isset($_GET['self-update'])) {
                 header("location: ../account/?edit={$userId}");
+                exit();
             } else {
                 header("location: ../admin/?user={$userId}");
+                exit();
             }
         }
     } else {
@@ -367,8 +384,10 @@ if (isset($_GET['login'])) {
         
         if ($_SESSION["error"] === "") {
             header("location: ../admin");
+            exit();
         } else {
             header("location: ../admin/adduser/");
+            exit();
         }
         
     }
@@ -378,16 +397,35 @@ if (isset($_GET['login'])) {
     $input = ["name"];
 
     if (count(validate(["delete_id"], true)) == 0) {
+        $query = "SELECT device_id FROM profileReleations WHERE profile_id = $profileId";
+        $selectStatus = $conn->query($query);
+
+        $deviceIds = [];
+        while ($row = $selectStatus->fetch_assoc()) {
+            $deviceIds[] = $row['device_id'];
+        }
+
+        // Convert IDs array to string
+        $deviceIdsString = implode(',', $deviceIds);
+
+        // Delete profile
         $query = "DELETE FROM profiles WHERE id = $profileId";
         $deleteStatus = $conn->query($query);
 
         if ($deleteStatus === false) {
-            $_SESSION['error'] = $deleteStatus;
-
+            $_SESSION['error'] = $conn->error;
             header("location: ../edit/profile/?profile=".$profileId);
-        } else {
-            header("location: ../");
+            exit();
         }
+
+        // Delete devices with associated IDs (if any)
+        if (!empty($deviceIds)) {
+            $query = "DELETE FROM devices WHERE id IN ($deviceIdsString)";
+            $deleteStatus = $conn->query($query);
+        }
+
+        header("location: ../");
+        exit();
 
     } elseif (count(validate($input, true)) == 0) {
 
@@ -401,8 +439,10 @@ if (isset($_GET['login'])) {
                     $_SESSION['error'] = $updateStatus;
 
                     header("location: ../edit/profile/?profile=".$profileId);
+                    exit();
                 } else {
                     header("location: ../");
+                    exit();
                 }
             } else {
                 $insert = "INSERT INTO profiles (name) VALUES ('{$_SESSION['name']}')";
@@ -414,8 +454,10 @@ if (isset($_GET['login'])) {
                     $_SESSION['error'] = $insertStatus;
 
                     header("location: ../edit/profile/");
+                    exit();
                 } else {
                     header("location: ../");
+                    exit();
                 }
             }
 
@@ -428,6 +470,7 @@ if (isset($_GET['login'])) {
         $_SESSION['error'] = "You have to enter a name for the profile.";
     
         header("location: ../edit/profile/?profile=".$profileId);
+        exit();
     }
 
 } elseif (isset($_GET["device"])) {
@@ -444,6 +487,7 @@ if (isset($_GET['login'])) {
             $_SESSION['error'] = $deleteStatus;
         } else {
             header("location: ../");
+            exit();
         }
         
 
@@ -456,6 +500,7 @@ if (isset($_GET['login'])) {
             if ($updateStatus === false) {
                 $_SESSION['error'] = $updateStatus;
                 header("location: ../edit/device/?device=".$deviceId);
+                exit();
             } else {
                 $profileIds = $_POST["profiles"];
 
@@ -483,8 +528,10 @@ if (isset($_GET['login'])) {
                 
                 if (isset($_SESSION["profile"])) {
                     header("location: ../device/?profile=".$_SESSION["profile"]."&device=".$deviceId);
+                    exit();
                 } else {
                     header("location: ../");
+                    exit();
                 }
                 
             }
@@ -505,10 +552,12 @@ if (isset($_GET['login'])) {
                     $insertStatus = $conn->query($insert);
 
                     header("location: ../edit/device/");
+                    exit();
                 }
             }
 
             header("location: ../");
+            exit();
         }
         
             
