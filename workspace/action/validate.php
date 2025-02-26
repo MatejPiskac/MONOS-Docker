@@ -571,6 +571,14 @@ if (isset($_GET['login'])) {
             
     } else {
         $_SESSION['error'] = "You have to enter all device data.";
+
+        if (!empty($deviceId)) {
+            header("location: ../edit/device/?device=$deviceId");
+        } else {
+            header("location: ../edit/device/");
+        }
+
+        exit();
     }
 }
 
