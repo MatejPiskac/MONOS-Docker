@@ -18,8 +18,13 @@
 ## <a name="install">Install Monos on your server</a>
 
 ### Install dockerfile
+With `wget`
 ```sh
-TODO
+wget https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/dockerfile output/directory
+```
+Using `curl`
+```sh
+curl https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/dockerfile output/directory
 ```
 
 ### Build the docker container
