@@ -323,66 +323,6 @@ function router($hostIp, $community) {
 
 
 function workstation($hostIp, $community) {
-    /*
-    $oids = [
-        "cpu" => [
-            "usage" => [
-                "oid" => "1.3.6.1.2.1.25.3.3.1.2",
-                "type" => [3, 4],
-                "id" => [
-                    "cpuLoad" => "CPU Usage: {}%",
-                    "coreLoads" => ["
-                        <div class='core-load'>
-                            <div>Core ||</div>
-                            <div class='percent-wrap'>
-                                <div class='percent'>{}% </div>
-                                <div class='percent-line-wrap'>
-                                    <div class='percent-line' style='width: calc({}%)'></div>
-                                </div>
-                            </div>
-                        </div>"]
-                ],
-                "separator" => "INTEGER: "
-            ],
-            "name" => [
-                "oid" => "1.3.6.1.2.1.25.3.2.1.3",
-                "type" => [3, 4],
-                "id" => [
-                    "cpuName" => ""
-                ],
-                "separator" => "STRING: "
-            ],
-        ],
-        "ram" => [
-            "total" => [
-                "oid" => "1.3.6.1.4.1.2021.4.5.0",
-                "type" => [3, 4],
-                "id" => [
-                    "totalRam" => "Total Ram: {}"
-                ],
-                "separator" => "INTEGER: "
-            ],
-            "free" => [
-                "oid" => "1.3.6.1.4.1.2021.4.6.0",
-                "type" => [3, 4],
-                "id" => [
-                    "freeRam" => "Free Ram: {}"
-                ],
-                "separator" => "INTEGER: "
-            ]
-        ],
-        "system" => [
-            "uptime" => [
-                "oid" => "1.3.6.1.2.1.1.3",
-                "type" => [3, 4],
-                "id" => [
-                    "sysUp" => "System Up: {}"
-                ],
-                "separator" => ") "
-            ]
-        ]
-    ];
-    */
 
     $oid_list = [
         "system" => [
