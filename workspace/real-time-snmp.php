@@ -212,6 +212,11 @@ function getRealTimeArray($type, $ip) {
         if (is_array($value["type"]) || $type == $value["type"]) {
             if (in_array($type, $value["type"])) {
                 $oid_req = @snmpwalk($ip, $community, $key);
+
+                if (!$oid_req) {
+                    return "<div id='unrecognized' style='margin: auto; text-align: center; max-width: 80vw;'>Unrecognized device (maybe wrong device type)</div>";
+                }
+
                 $oid_arr = snmpFormat($oid_req, $value["separator"]);
 
                 foreach ($value["id"] as $elemetId => $htmlTemplate) {

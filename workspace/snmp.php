@@ -37,6 +37,17 @@ function snmpFormat($snmp_arr, $separator) {
     return $snmp_formatted_arr;
 }
 
+function snmpdata($hostIp, $community, $oid, $separator) {
+    $snmpget = @snmpwalk($hostIp, $community, $oid);
+    if ($snmpget) {
+        $output = snmpFormat($snmpget, $separator);
+    } else {
+        $output = "";
+    }
+
+    return $output;
+}
+
 function router($hostIp, $community) {
     $oid_list = [
         "interface" => [
@@ -75,29 +86,25 @@ function router($hostIp, $community) {
     } else {
         foreach ($oid_list as $key => $value) {
             if ($key == "interface") {
-                $if_name_arr = @snmpwalk($hostIp, $community, $value["name"]);
-                $if_name_arr = snmpFormat($if_name_arr, "STRING: ");
+                $if_name_arr = snmpdata($hostIp, $community, $value["name"], "STRING: ");
 
-                $if_admin_status_arr = @snmpwalk($hostIp, $community, $value["admin-stat"]);
-                $if_admin_status_arr = snmpFormat($if_admin_status_arr, "INTEGER: ");
+                if (!$if_name_arr) {
+                    return "<div id='unrecognized' style='margin: auto; text-align: center; max-width: 80vw;'>Unrecognized device (maybe wrong device type)</div>";
+                }
 
-                $if_oper_status_arr = @snmpwalk($hostIp, $community, $value["oper-stat"]);
-                $if_oper_status_arr = snmpFormat($if_oper_status_arr, "INTEGER: ");
+                $if_admin_status_arr = snmpdata($hostIp, $community, $value["admin-stat"], "INTEGER: ");
 
-                $in_bytes_arr = @snmpwalk($hostIp, $community, $value["in-bytes"]);
-                $in_bytes_arr = snmpFormat($in_bytes_arr, "Counter32: ");
+                $if_oper_status_arr = snmpdata($hostIp, $community, $value["oper-stat"], "INTEGER: ");
 
-                $out_bytes_arr = @snmpwalk($hostIp, $community, $value["out-bytes"]);
-                $out_bytes_arr = snmpFormat($out_bytes_arr, "Counter32: ");
+                $in_bytes_arr = snmpdata($hostIp, $community, $value["in-bytes"], "Counter32: ");
 
-                $ip_arr = @snmpwalk($hostIp, $community, $value["ip"]);
-                $ip_arr = snmpFormat($ip_arr, "IpAddress: ");
+                $out_bytes_arr = snmpdata($hostIp, $community, $value["out-bytes"], "Counter32: ");
 
-                $mask_arr = @snmpwalk($hostIp, $community, $value["mask"]);
-                $mask_arr = snmpFormat($mask_arr, "IpAddress: ");
-
-                $mac_arr = @snmpwalk($hostIp, $community, $value["mac"]);
-                $mac_arr = snmpFormat($mac_arr, "STRING: ");
+                $ip_arr = snmpdata($hostIp, $community, $value["ip"], "IpAddress: ");
+                
+                $mask_arr = snmpdata($hostIp, $community, $value["mask"], "IpAddress: ");
+                
+                $mac_arr = snmpdata($hostIp, $community, $value["mac"], "STRING: ");
 
                 $intefraceHTML = "";
                 foreach ($if_name_arr as $key => $value) {
@@ -349,22 +356,21 @@ function workstation($hostIp, $community) {
     } else {
         foreach ($oid_list as $key => $value) {
             if ($key == "system") {
-                $device_name = @snmpwalk($hostIp, $community, $value["deviceName"]);
-                $sys_contact = @snmpwalk($hostIp, $community, $value["contact"]);
+                $device_name = snmpdata($hostIp, $community, $value["deviceName"], "STRING: ")[0];
 
-                $device_name = snmpFormat($device_name, "STRING: ")[0];
-                $sys_contact = snmpFormat($sys_contact, "STRING: ")[0];
+                if (!$device_name) {
+                    return "<div id='unrecognized' style='margin: auto; text-align: center; max-width: 80vw;'>Unrecognized device (maybe wrong device type)</div>";
+                }
+
+                $sys_contact = snmpdata($hostIp, $community, $value["contact"], "STRING: ")[0];
                 
                 $device_name = str_replace('"', '', $device_name);
                 $sys_contact = str_replace('"', '', $sys_contact);
             } elseif ($key == "disk") {
-                $disk_size = @snmpwalk($hostIp, $community, $value["size"]);
-                $used_size = @snmpwalk($hostIp, $community, $value["used"]);
-                $storage_type = @snmpwalk($hostIp, $community, $value["type"]);
+                $size_arr = snmpdata($hostIp, $community, $value["size"], "INTEGER: ");
+                $type_arr = snmpdata($hostIp, $community, $value["type"], "OID: ");
+                $used_arr = snmpdata($hostIp, $community, $value["used"], "INTEGER: ");
 
-                $size_arr = snmpFormat($disk_size, "INTEGER: ");
-                $type_arr = snmpFormat($storage_type, "OID: ");
-                $used_arr = snmpFormat($used_size, "INTEGER: ");
                 $total_size = 0;
                 $total_used = 0;
 
