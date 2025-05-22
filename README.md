@@ -35,7 +35,7 @@ wget https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/d
 ```
 Using `curl`
 ```sh
-curl -o https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/dockerfile output/directory
+curl -O https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/dockerfile output/directory
 ```
 
 ### Build the docker container
