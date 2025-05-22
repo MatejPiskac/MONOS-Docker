@@ -31,11 +31,11 @@ sudo apt install -y curl
 ### Install dockerfile
 With `wget`
 ```sh
-wget https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.2-beta/dockerfile output/directory
+wget https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/dockerfile output/directory
 ```
 Using `curl`
 ```sh
-curl https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.2-beta/dockerfile output/directory
+curl -o https://github.com/MatejPiskac/MONOS-Docker/releases/download/v0.0.1-beta/dockerfile output/directory
 ```
 
 ### Build the docker container
